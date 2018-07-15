@@ -1,0 +1,291 @@
+﻿<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<script src="~/Scripts/jquery3.3.1.js"></script>
+<script src="~/Scripts/angular.min.1.6.4.js"></script>
+<script src="~/Scripts/bootstrap.min.3.3.7.js"></script>
+<script src="~/JS/app.js"></script>
+<script src="~/JS/config.js"></script>
+<script src="~/JS/ContactForm.js"></script>
+<link href="~/Content/mainStyle.css" rel="stylesheet" />
+<script>
+    function reloadPg() {
+        window.location.reload();
+    }
+</script>
+<body ng-app="myApp">
+    <div class="container" ng-controller="contactController">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 text-center">
+                <h3>Contact Form Application</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="col-lg-3 col-md-2 col-sm-4"></div>
+                <div class="col-lg-6 col-md-8 col-sm-4">
+                    <form class="form-horizontal" novalidate name="contactFrm">
+                        <div class="form-group" ng-class="{
+                            'has-error':contactFrm.firstName.$dirty
+                            && contactFrm.firstName.$invalid,
+                            'has-success':contactFrm.firstName.$valid
+                        }">
+                            <label>First Name :</label>
+                            <input id="firstName" name="firstName" ng-model="contactForm.firstName" class="form-control" placeholder="First Name" required />
+                            <span class="error text-small block" ng-if="contactFrm.firstName.$dirty && contactFrm.firstName.$invalid">Enter Valid First Name </span>
+                        </div>
+                        <div class="form-group" ng-class="{
+                            'has-error':contactFrm.lastName.$dirty
+                            && contactFrm.lastName.$invalid,
+                            'has-success':contactFrm.lastName.$valid
+                        }">
+                            <label>Last Name :</label>
+                            <input id="lastName" name="lastName" ng-model="contactForm.lastName" class="form-control" placeholder="Last Name" required />
+                            <span class="error text-small block" ng-if="contactFrm.lastName.$dirty && contactFrm.lastName.$invalid">Enter Valid Last Name</span>
+                        </div>
+                        <div class="form-group" ng-class="{
+                            'has-error':contactFrm.email.$dirty
+                            && contactFrm.email.$invalid,
+                            'has-success':contactFrm.email.$valid
+                        }">
+                            <label>Email :</label>
+                            <input type="email" id="email" name="email" ng-model="contactForm.email" class="form-control" placeholder="Email" required />
+                            <span class="error text-small block" ng-if="contactFrm.email.$dirty && contactFrm.email.$invalid">Enter Valid Email</span>
+                        </div>
+                        <div class="form-group" ng-class="{
+                            'has-error':contactFrm.phoneNumber.$dirty
+                            && contactFrm.phoneNumber.$invalid,
+                            'has-success':contactFrm.phoneNumber.$valid
+                        }">
+                            <label>Phone Number :</label>
+                            <input id="phoneNumber" name="phoneNumber" ng-model="contactForm.phoneNumber" class="form-control" placeholder="Phone Number" required />
+                            <span class="error text-small block" ng-if="contactFrm.phoneNumber.$dirty && contactFrm.phoneNumber.$invalid">Enter Valid Phone Number</span>
+                        </div>
+                        <div class="form-group" ng-class="{
+                            'has-error':contactFrm.contactStatus.$dirty
+                            && contactFrm.contactStatus.$invalid,
+                            'has-success':contactFrm.contactStatus.$valid
+                        }">
+                            <label>Status :</label>
+                            <span style="padding-left:15px;padding-right:15px;">
+                                <label><input type="radio" name="contactStatus" ng-model="contactForm.status" ng-value="1" required>&nbsp;Active</label>
+                            </span>
+                            <span style="padding-left:15px;padding-right:15px;">
+                                <label><input type="radio" name="contactStatus" ng-model="contactForm.status" ng-value="0" required>&nbsp;Inactive</label>
+                            </span>
+                            <span class="error text-small block" ng-if="contactFrm.contactStatus.$dirty && contactFrm.contactStatus.$invalid">Select Valid Status</span>
+                        </div>
+                        <div class="form-group text-center">
+                            <button type="submit" class="btn btn-success" ng-click="add()" data-toggle="modal" ng-disabled="loading" style="padding: 9px 50px;" ng-if="!contactForm.id">{{loading || 'Add'}}</button>
+                            <button type="submit" class="btn btn-success" ng-click="update()" ng-disabled="loading" style="padding: 9px 50px;" ng-if="contactForm.id">{{loading || 'Update'}}</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-lg-3 col-md-2 col-sm-4"></div>
+            </div>
+        </div>
+        <div class="clear-fix">
+
+        </div>
+        <div class="row table-responsive">
+            <table class="table table-bordered text-center table-striped" cellpadding="0" cellspacing="0" border="0">
+                <thead>
+                    <tr>
+                        <td>
+                            Sr.No.
+                        </td>
+                        <td>
+                            First Name
+                        </td>
+                        <td>
+                            Last Name
+                        </td>
+                        <td>
+                            Email
+                        </td>
+                        <td>
+                            Phone Number
+                        </td>
+                        <td>
+                            Status
+                        </td>
+                        <td>
+                            Action
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="data in contactdetails" ng-if="contactdetails.length">
+                        <td>
+                            {{$index + 1}}
+                        </td>
+                        <td>
+                            {{data.firstName}}
+                        </td>
+                        <td>
+                            {{data.lastName}}
+                        </td>
+                        <td>
+                            {{data.email}}
+                        </td>
+                        <td>
+                            {{data.phoneNumber}}
+                        </td>
+                        <td ng-if="data.status == 1">
+                            Active
+                        </td>
+                        <td ng-if="data.status == 0">
+                            Inactive
+                        </td>
+                        <td>
+                            <a class="btn btn-info" ng-click="edit(data)" href="javascript:void(0);">Edit</a> &nbsp; <a class="btn btn-danger" ng-click="delete(data.id)" href="javascript:void(0);">Delete</a> &nbsp; <a class="btn btn-warning" ng-if="data.status == 1" ng-click="changeStatus(data,0)" href="javascript:void(0);">Inactive</a> &nbsp; <a class="btn btn-warning" ng-if="data.status == 0" ng-click="changeStatus(data,1)" href="javascript:void(0);">Active</a>
+                        </td>
+                    </tr>
+                    <tr ng-if="!contactdetails.length">
+                        <td colspan="7">No data available...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+<div id="addModal" class="modal fade margintop15per" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                @*
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>*@
+                <h4 class="modal-title">Information</h4>
+            </div>
+            <div class="modal-body modalmessage">
+                <p>Contact added successfully.</p>
+            </div>
+            <div class="modal-footer">
+                <div class="col-lg-4 col-md-4 col-sm-4">
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 text-center">
+                    <button type="submit" class="btn btn-success Okbtn" data-dismiss="modal" onclick="reloadPg()">Ok</button>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@*<div id="updateModal" class="modal fade margintop15per" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Information</h4>
+                </div>
+                <div class="modal-body modalmessage">
+                    <p>Contact updated successfully.</p>
+                </div>
+                <div class="modal-footer">
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4 text-center">
+                            <button type="button" class="btn btn-success Okbtn " data-dismiss="modal" >Ok</button>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>*@
+<div id="deleteModal" class="modal fade margintop15per" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                @*
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>*@
+                <h4 class="modal-title">Information</h4>
+            </div>
+            <div class="modal-body modalmessage">
+                <p>Contact deleted successfully.</p>
+            </div>
+            <div class="modal-footer">
+                <div class="col-lg-4 col-md-4 col-sm-4">
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 text-center">
+                    <button type="button" class="btn btn-success Okbtn text-center" data-dismiss="modal">Ok</button>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="activeModal" class="modal fade margintop15per" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                @*
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>*@
+                <h4 class="modal-title">Information</h4>
+            </div>
+            <div class="modal-body modalmessage">
+                <p>Contact activated successfully.</p>
+            </div>
+            <div class="modal-footer">
+                <div class="col-lg-4 col-md-4 col-sm-4">
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 text-center">
+                    <button type="button" class="btn btn-success Okbtn" data-dismiss="modal">Ok</button>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="CommonUpdateModal" class="modal fade margintop15per" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                @*
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>*@
+                <h4 class="modal-title">Information</h4>
+            </div>
+            <div class="modal-body modalmessage">
+                <p>Contact updated successfully.</p>
+            </div>
+            <div class="modal-footer">
+                <div class="col-lg-4 col-md-4 col-sm-4">
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 text-center">
+                    <button type="button" class="btn btn-success Okbtn" data-dismiss="modal" onclick="reloadPg()">Ok</button>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@*
+    <div id="CommonModal" class="modal fade margintop15per" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Confirmation</h4>
+                </div>
+                <div class="modal-body modalmessage">
+                    <p>Are you sure want to update contact?</p>
+                </div>
+                <div class="modal-footer">
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 text-center">
+                        <button type="button" class="btn btn-success Okbtn" data-ng-click="yesContact()">Yes</button>
+                        <button type="button" class="btn btn-success Okbtn" data-dismiss="modal">Cancel</button>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>*@

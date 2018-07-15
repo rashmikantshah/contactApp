@@ -1,0 +1,34 @@
+﻿.margintop15per {
+    margin-top: 15%;
+}
+
+.dialogwidth {
+    width: 35% !important;
+}
+
+.modalmessage {
+    text-align: center;
+    height: auto;
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+.modalpopupOkbtndiv {
+    text-align: center;
+    width: 60%;
+}
+
+.Okbtn1 {
+    width: 30%;
+    height: 30px;
+    /*border-radius: 3px;
+    background-color: #57004f;
+    border: solid 1px #57004f;
+    color: white;
+    /*padding-top: 3px;**/
+    margin-left: 35%;
+    padding-top: 5px;
+}
+
+.error{
+    color:red;

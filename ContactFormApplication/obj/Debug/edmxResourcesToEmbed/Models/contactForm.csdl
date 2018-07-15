@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="contactFormDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="contactDetail">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="firstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="lastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="phoneNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="status" Type="Byte" Nullable="false" />
+  </EntityType>
+  <EntityContainer Name="contactFormDBEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="contactDetails" EntityType="Self.contactDetail" />
+    <FunctionImport Name="sp_ContactProcedure" ReturnType="Collection(contactFormDBModel.sp_ContactProcedure_Result)">
+      <Parameter Name="id" Mode="In" Type="Int32" />
+      <Parameter Name="firstName" Mode="In" Type="String" />
+      <Parameter Name="lastName" Mode="In" Type="String" />
+      <Parameter Name="email" Mode="In" Type="String" />
+      <Parameter Name="phoneNumber" Mode="In" Type="String" />
+      <Parameter Name="status" Mode="In" Type="Byte" />
+      <Parameter Name="type" Mode="In" Type="String" />
+    </FunctionImport>
+  </EntityContainer>
+  <ComplexType Name="sp_ContactProcedure_Result">
+    <Property Type="Int32" Name="id" Nullable="false" />
+    <Property Type="String" Name="firstName" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="lastName" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="email" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="phoneNumber" Nullable="false" MaxLength="50" />
+    <Property Type="Byte" Name="status" Nullable="false" />
+  </ComplexType>
+</Schema>
